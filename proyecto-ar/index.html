@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Proyecto AR - Temas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    .instrucciones {
+      position: fixed; bottom: 10px; left: 10px; right: 10px;
+      color: white; background: rgba(0,0,0,0.55); padding: 8px 12px;
+      border-radius: 8px; font-family: sans-serif; font-size: 14px; z-index: 999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="instrucciones">Enfoca uno de los marcadores de tu cartulina con la cámara</div>
+
+  <a-scene
+    embedded
+    vr-mode-ui="enabled: false"
+    renderer="logarithmicDepthBuffer: true;"
+    arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix;">
+
+    <a-assets>
+      <!-- Aquí podrías precargar texturas de fondo del pergamino si usas una imagen en vez de un color plano -->
+    </a-assets>
+
+    <!-- ============================================= -->
+    <!-- MARCADOR 1: SALVACIÓN -->
+    <!-- ============================================= -->
+    <a-marker type="pattern" url="markers/salvacion.patt" id="marker-salvacion">
+      <a-entity rotation="-90 0 0" position="0 0 0">
+
+        <!-- Pergamino (fondo tipo papel viejo) -->
+        <a-plane
+          class="pergamino"
+          color="#EFE0BE"
+          width="1.2" height="1.6"
+          material="side: double"
+          animation__abrir="property: scale; startEvents: markerFound; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
+          animation__cerrar="property: scale; startEvents: markerLost; to: 0.05 1 0.05; dur: 400; easing: easeInQuad">
+        </a-plane>
+
+        <!-- Borde decorativo simple -->
+        <a-plane
+          color="#7a5c31"
+          width="1.28" height="1.68"
+          position="0 0 -0.01"
+          animation__abrir="property: scale; startEvents: markerFound; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
+          animation__cerrar="property: scale; startEvents: markerLost; to: 0.05 1 0.05; dur: 400">
+        </a-plane>
+
+        <!-- Texto de información secundaria -->
+        <a-text
+          value="LA SALVACIÓN\n\nAquí va tu información secundaria de este tema: explicación, versículo, cita o dato ampliado que no cabía en la cartulina."
+          align="center"
+          width="1.6"
+          color="#3b2c20"
+          position="0 0 0.02"
+          opacity="0"
+          animation__fade="property: opacity; startEvents: markerFound; from: 0; to: 1; delay: 700; dur: 500">
+        </a-text>
+
+      </a-entity>
+    </a-marker>
+
+    <!-- ============================================= -->
+    <!-- MARCADOR 2: LOS TÍTULOS DE JESÚS -->
+    <!-- ============================================= -->
+    <a-marker type="pattern" url="markers/titulos.patt" id="marker-titulos">
+      <a-entity rotation="-90 0 0" position="0 0 0">
+
+        <a-plane
+          color="#EFE0BE" width="1.2" height="1.6" material="side: double"
+          animation__abrir="property: scale; startEvents: markerFound; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
+          animation__cerrar="property: scale; startEvents: markerLost; to: 0.05 1 0.05; dur: 400">
+        </a-plane>
+
+        <a-plane
+          color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01"
+          animation__abrir="property: scale; startEvents: markerFound; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
+          animation__cerrar="property: scale; startEvents: markerLost; to: 0.05 1 0.05; dur: 400">
+        </a-plane>
+
+        <a-text
+          value="LOS TÍTULOS DE JESÚS\n\nInformación secundaria de este tema. Reemplaza este texto por el contenido real que quieres mostrar."
+          align="center" width="1.6" color="#3b2c20" position="0 0 0.02"
+          opacity="0"
+          animation__fade="property: opacity; startEvents: markerFound; from: 0; to: 1; delay: 700; dur: 500">
+        </a-text>
+
+      </a-entity>
+    </a-marker>
+
+    <!-- ============================================= -->
+    <!-- MARCADOR 3: NOMBRE DE JESÚS -->
+    <!-- ============================================= -->
+    <a-marker type="pattern" url="markers/nombre.patt" id="marker-nombre">
+      <a-entity rotation="-90 0 0" position="0 0 0">
+
+        <a-plane
+          color="#EFE0BE" width="1.2" height="1.6" material="side: double"
+          animation__abrir="property: scale; startEvents: markerFound; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
+          animation__cerrar="property: scale; startEvents: markerLost; to: 0.05 1 0.05; dur: 400">
+        </a-plane>
+
+        <a-plane
+          color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01"
+          animation__abrir="property: scale; startEvents: markerFound; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
+          animation__cerrar="property: scale; startEvents: markerLost; to: 0.05 1 0.05; dur: 400">
+        </a-plane>
+
+        <a-text
+          value="EL NOMBRE DE JESÚS\n\nInformación secundaria de este tema. Reemplaza este texto por el contenido real que quieres mostrar."
+          align="center" width="1.6" color="#3b2c20" position="0 0 0.02"
+          opacity="0"
+          animation__fade="property: opacity; startEvents: markerFound; from: 0; to: 1; delay: 700; dur: 500">
+        </a-text>
+
+      </a-entity>
+    </a-marker>
+
+    <a-entity camera></a-entity>
+
+  </a-scene>
+
+</body>
+</html>
