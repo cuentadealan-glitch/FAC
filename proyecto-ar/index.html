@@ -16,13 +16,20 @@
         var img = el.querySelector('.mapa-img');
         var txt = el.querySelector('.texto-reserva');
         if (url && img) {
-          var probe = new Image();
-          probe.onload = function () {
-            img.setAttribute('src', url);
-            img.setAttribute('visible', true);
-            if (txt) txt.setAttribute('visible', false);
-          };
-          probe.src = url;
+          // Prueba varias extensiones (png, jpg, jpeg, webp) hasta encontrar la imagen del mapa
+          var base = url.replace(/\.[a-z]+$/i, '');
+          var exts = ['png', 'jpg', 'jpeg', 'webp'];
+          (function probar(i) {
+            if (i >= exts.length) return;
+            var probe = new Image();
+            probe.onload = function () {
+              img.setAttribute('src', base + '.' + exts[i]);
+              img.setAttribute('visible', true);
+              if (txt) txt.setAttribute('visible', false);
+            };
+            probe.onerror = function () { probar(i + 1); };
+            probe.src = base + '.' + exts[i];
+          })(0);
         }
         el.addEventListener('markerFound', function () {
           el.querySelectorAll('.anim').forEach(function (c) { c.emit('abrir'); });
