@@ -7,10 +7,23 @@
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   <script>
-    // Cuando la cámara encuentra o pierde un marcador, avisa a los elementos con class="anim" que están dentro
+    // Al encontrar o perder un marcador, avisa a los elementos con class="anim" que están dentro.
+    // Si existe la imagen del mapa mental (data-mapa), la muestra en lugar del texto de relleno.
     AFRAME.registerComponent('reveal', {
       init: function () {
         var el = this.el;
+        var url = el.getAttribute('data-mapa');
+        var img = el.querySelector('.mapa-img');
+        var txt = el.querySelector('.texto-reserva');
+        if (url && img) {
+          var probe = new Image();
+          probe.onload = function () {
+            img.setAttribute('src', url);
+            img.setAttribute('visible', true);
+            if (txt) txt.setAttribute('visible', false);
+          };
+          probe.src = url;
+        }
         el.addEventListener('markerFound', function () {
           el.querySelectorAll('.anim').forEach(function (c) { c.emit('abrir'); });
         });
@@ -33,194 +46,242 @@
     arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix;">
 
     <!-- LA SALVACIÓN -->
-    <a-marker type="pattern" url="markers/salvacion.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/salvacion.patt" emitevents="true" reveal data-mapa="mapa_salvacion.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: LA SALVACIÓN\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- LOS TÍTULOS DE JESÚS -->
-    <a-marker type="pattern" url="markers/titulos.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/titulos.patt" emitevents="true" reveal data-mapa="mapa_titulos.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: LOS TÍTULOS DE JESÚS\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- EL NOMBRE DE JESÚS -->
-    <a-marker type="pattern" url="markers/nombre.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/nombre.patt" emitevents="true" reveal data-mapa="mapa_nombre.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: EL NOMBRE DE JESÚS\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- SEGURIDAD ETERNA -->
-    <a-marker type="pattern" url="markers/seguridad_eterna.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/seguridad_eterna.patt" emitevents="true" reveal data-mapa="mapa_seguridad_eterna.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: SEGURIDAD ETERNA\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- SANTIDAD -->
-    <a-marker type="pattern" url="markers/santidad.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/santidad.patt" emitevents="true" reveal data-mapa="mapa_santidad.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: SANTIDAD\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- PERFECCIÓN -->
-    <a-marker type="pattern" url="markers/perfeccion.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/perfeccion.patt" emitevents="true" reveal data-mapa="mapa_perfeccion.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: PERFECCIÓN\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- SANTIFICACIÓN -->
-    <a-marker type="pattern" url="markers/santificacion.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/santificacion.patt" emitevents="true" reveal data-mapa="mapa_santificacion.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: SANTIFICACIÓN\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- NUEVO NACIMIENTO -->
-    <a-marker type="pattern" url="markers/nuevo_nacimiento.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/nuevo_nacimiento.patt" emitevents="true" reveal data-mapa="mapa_nuevo_nacimiento.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: NUEVO NACIMIENTO\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- JUSTIFICACIÓN -->
-    <a-marker type="pattern" url="markers/justificacion.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/justificacion.patt" emitevents="true" reveal data-mapa="mapa_justificacion.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: JUSTIFICACIÓN\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- LA FE -->
-    <a-marker type="pattern" url="markers/fe.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/fe.patt" emitevents="true" reveal data-mapa="mapa_fe.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: LA FE\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- ARREPENTIMIENTO -->
-    <a-marker type="pattern" url="markers/arrepentimiento.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/arrepentimiento.patt" emitevents="true" reveal data-mapa="mapa_arrepentimiento.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: ARREPENTIMIENTO\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
     <!-- SANIDAD -->
-    <a-marker type="pattern" url="markers/sanidad.patt" emitevents="true" reveal>
+    <a-marker type="pattern" url="markers/sanidad.patt" emitevents="true" reveal data-mapa="mapa_sanidad.png">
       <a-entity rotation="-90 0 0">
-        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.68" position="0 0 -0.01" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#7a5c31" width="1.28" height="1.58" position="0 0 -0.01" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.6" material="side: double" scale="0.05 1 0.05"
+        <a-plane class="anim" color="#EFE0BE" width="1.2" height="1.5" material="side: double" scale="0.05 1 0.05"
           animation__abrir="property: scale; startEvents: abrir; from: 0.05 1 0.05; to: 1 1 1; dur: 1000; easing: easeOutBack"
           animation__cerrar="property: scale; startEvents: cerrar; to: 0.05 1 0.05; dur: 400"></a-plane>
-        <a-entity class="anim" position="0 0 0.02"
+        <a-entity class="anim texto-reserva" position="0 0 0.02"
           text="value: SANIDAD\n\nEscribe aquí la información secundaria de este tema.; align: center; width: 1.6; color: #3b2c20; opacity: 0"
           animation__abrir="property: text.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
           animation__cerrar="property: text.opacity; startEvents: cerrar; to: 0; dur: 200"></a-entity>
+        <a-image class="anim mapa-img" visible="false" width="1.2" height="1.5" position="0 0 0.02"
+          material="shader: flat; opacity: 0; transparent: true"
+          animation__abrir="property: material.opacity; startEvents: abrir; from: 0; to: 1; delay: 700; dur: 500"
+          animation__cerrar="property: material.opacity; startEvents: cerrar; to: 0; dur: 200"></a-image>
       </a-entity>
     </a-marker>
 
